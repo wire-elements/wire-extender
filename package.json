@@ -1,0 +1,24 @@
+{
+  "name": "@wire-elements/wire-extender",
+  "version": "0.0.3",
+  "description": "Wire Extender allows you to embed any Livewire component on any website or even within a static HTML file.",
+  "main": "js/wire-extender.js",
+  "files":  [
+    "js/wire-extender.js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wire-elements/wire-extender.git"
+  },
+  "keywords": [
+    "livewire",
+    "embed",
+    "laravel"
+  ],
+  "author": "Philo Hermans",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wire-elements/wire-extender/issues"
+  },
+  "homepage": "https://github.com/wire-elements/wire-extender#readme"
+}

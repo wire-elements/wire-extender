@@ -1,0 +1,29 @@
+{
+    "name": "wire-elements/wire-extender",
+    "description": "Embed your Livewire components anywhere.",
+    "require": {
+        "php": "^8.1",
+        "livewire/livewire": "v3.4.7"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "WireElements\\WireExtender\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Philo Hermans",
+            "email": "me@philo.dev"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "WireElements\\WireExtender\\WireExtenderServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
