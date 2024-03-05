@@ -1,8 +1,7 @@
 <p align="center">
-<a href="https://github.com/wire-extender/actions"><img src="https://github.com/wire-extender/workflows/PHPUnit/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/wire-extender"><img src="https://img.shields.io/packagist/dt/wire-extender" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/wire-extender"><img src="https://img.shields.io/packagist/v/wire-extender" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/wire-extender"><img src="https://img.shields.io/packagist/l/wire-extender" alt="License"></a>
+<a href="https://packagist.org/packages/wire-elements/wire-extender"><img src="https://img.shields.io/packagist/dt/wire-elements/wire-extender" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/wire-elements/wire-extender"><img src="https://img.shields.io/packagist/v/wire-elements/wire-extender" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/wire-elements/wire-extender"><img src="https://img.shields.io/packagist/l/wire-elements/wire-extender" alt="License"></a>
 </p>
 
 ## Embed Livewire Components Using Wire Extender
