@@ -19,7 +19,7 @@ function getUri(append = '')
 
 function getLivewireAssetUri()
 {
-    return document.querySelector('[data-livewire-asset-uri]')?.getAttribute('data-livewire-asset-uri') ?? getUri('livewire/livewire.js');
+    return document.querySelector('[data-livewire-asset-uri]')?.getAttribute('data-livewire-asset-uri') ?? getUri('livewire/livewire.min.js');
 }
 
 function getLivewireUpdateUri()
