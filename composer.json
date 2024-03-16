@@ -3,7 +3,7 @@
     "description": "Embed your Livewire components anywhere.",
     "require": {
         "php": "^8.1",
-        "livewire/livewire": "v3.4.7"
+        "livewire/livewire": "^v3.4.7"
     },
     "license": "MIT",
     "autoload": {
