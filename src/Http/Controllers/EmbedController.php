@@ -13,7 +13,7 @@ class EmbedController
     {
         $components = collect($request->json('components', []))->mapWithKeys(function ($component) {
             $componentName = $component['name'];
-            $componentParams = json_decode($component['params'], true);
+            $componentParams = json_decode($component['params'], true) ?? [];
 
             if (WireExtender::isEmbeddable($componentName) === false) {
                 return [$componentName => null];
