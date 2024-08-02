@@ -12,7 +12,7 @@ class EmbedController
     public function __invoke(Request $request)
     {
         $components = collect($request->json('components', []))->mapWithKeys(function ($component) {
-            $componentId = $component['id'];
+            $componentKey = $component['key'];
             $componentName = $component['name'];
             $componentParams = json_decode($component['params'], true) ?? [];
 
@@ -21,7 +21,8 @@ class EmbedController
             }
 
             return [
-                $componentId => Blade::render('@livewire($component, $params)', [
+                $componentKey => Blade::render('@livewire($component, $params, key($key))', [
+                    'key' => $componentKey,
                     'component' => $componentName,
                     'params' => $componentParams,
                 ]),
