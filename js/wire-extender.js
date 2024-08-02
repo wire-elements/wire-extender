@@ -30,7 +30,10 @@ function getLivewireUpdateUri()
 
 function getEmbedUri()
 {
-    return document.querySelector('[data-embed-uri]')?.getAttribute('data-embed-uri') ?? getUri('livewire/embed');
+    const base = document.querySelector('[data-embed-uri]')?.getAttribute('data-embed-uri') ?? getUri('livewire/embed');
+    const queryString = window.location.search;
+
+    return base + queryString;
 }
 
 function injectLivewire()
