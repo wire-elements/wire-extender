@@ -90,7 +90,7 @@ function renderComponents(components)
         .then(response => response.json())
         .then(data => {
             for (let component in data.components) {
-                let el = document.querySelector(`[data-component="${component}"]`);
+                let el = document.querySelector(`[data-component-id="${component}"]`);
                 el.innerHTML = data.components[component];
             }
 
@@ -103,7 +103,12 @@ document.addEventListener('DOMContentLoaded', function() {
     let components = [];
 
     document.querySelectorAll('livewire').forEach((el) => {
+        if (!el.hasAttribute('data-component-id')) {
+            el.setAttribute('data-component-id', Math.random().toString(36).substring(2));
+        }
+
         components.push({
+            id: el.getAttribute('data-component-id'),
             name: el.getAttribute('data-component'),
             params: el.getAttribute('data-params')
         });
