@@ -1,6 +1,6 @@
 {
   "name": "@wire-elements/wire-extender",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Wire Extender allows you to embed any Livewire component on any website or even within a static HTML file.",
   "main": "js/wire-extender.js",
   "files":  [
