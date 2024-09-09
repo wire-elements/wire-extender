@@ -72,6 +72,7 @@ async function startLivewire(assets)
 {
     Livewire.hook('request', ({ options }) => {
         options.headers['X-Wire-Extender'] = '';
+        options.credentials = 'include';
     })
     await Livewire.triggerAsync('payload.intercept', {assets: componentAssets});
     Livewire.start();
@@ -88,7 +89,8 @@ function renderComponents(components)
         },
         body: JSON.stringify({
             components: components
-        })
+        }),
+       'credentials': 'include'
     })
         .then(response => response.json())
         .then(data => {
