@@ -39,6 +39,6 @@ class WireExtenderServiceProvider extends ServiceProvider
      */
     private function registerConfig(): void
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/wire-extender.php', 'wire-extender');
+        $this->mergeConfigFrom(__DIR__.'/../config/wire-extender.php', 'wire-extender');
     }
 }
