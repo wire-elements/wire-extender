@@ -3,11 +3,12 @@
 namespace WireElements\WireExtender\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Support\Facades\Blade;
 use Livewire\Features\SupportScriptsAndAssets\SupportScriptsAndAssets;
 use WireElements\WireExtender\WireExtender;
 
-class EmbedController
+class EmbedController implements HasMiddleware
 {
     public function __invoke(Request $request)
     {
@@ -33,5 +34,10 @@ class EmbedController
             'components' => $components,
             'assets' => SupportScriptsAndAssets::getAssets(),
         ];
+    }
+
+    public static function middleware()
+    {
+        return config('wire-extender.middlewares', []);
     }
 }

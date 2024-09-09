@@ -13,6 +13,7 @@ class WireExtenderServiceProvider extends ServiceProvider
     {
         $this->registerPackageRoutes();
         $this->registerAssets();
+        $this->registerConfig();
     }
 
     /*
@@ -23,10 +24,21 @@ class WireExtenderServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
     }
 
+    /*
+     * Register package assets.
+     */
     private function registerAssets(): void
     {
         $this->publishes([
             __DIR__.'/../js' => public_path('vendor/wire-elements'),
         ], 'wire-extender');
+    }
+
+    /*
+     * Register package config.
+     */
+    private function registerConfig(): void
+    {
+        $this->mergeConfigFrom(__DIR__ . '/../config/wire-extender.php', 'wire-extender');
     }
 }
