@@ -121,3 +121,49 @@ document.addEventListener('DOMContentLoaded', function() {
 
     renderComponents(components);
 });
+
+// Attribute "component:navigate"
+document.addEventListener('livewire:initialized', (e) => {
+    // If a "component:navigate" anker is clicked, load the given component
+    const componentNavigateClick = (event) => {
+        event.preventDefault();
+
+        let component = event.target.getAttribute('data-component');
+        let params = event.target.getAttribute('data-params');
+
+        let livewireElem = event.target.closest("livewire");
+        livewireElem.setAttribute('data-component', component);
+        livewireElem.setAttribute('data-params', params ?? '');
+
+        renderComponents([{name: component, params: params}]);
+    };
+
+    // Register click event for all elements with attribute "component:navigate"
+    const componentNavigateElementUpdated = ({el}) => {
+        if (el == undefined) {
+            document.querySelectorAll('[component\\:navigate]').forEach(
+                (elem) => elem.addEventListener('click', componentNavigateClick)
+            );
+            return;
+        }
+    
+        if (el.hasAttribute('component:navigate')) {
+            el.addEventListener('click', componentNavigateClick);
+            return;
+        }
+    };
+
+    // Trigger event for every livewire update cycle
+    window.Livewire.hook('morph.updated', componentNavigateElementUpdated);
+
+    // Use observer to detect if the component has been replaced
+    const componentNavigateObserver = new MutationObserver( () => {
+        componentNavigateElementUpdated({ undefined });
+    });
+    document.querySelectorAll('livewire').forEach((elem) => {
+        componentNavigateObserver.observe(elem, {attributes: false, childList: true, subtree: true});
+    });
+
+    // Initial call to register click events
+    componentNavigateElementUpdated({ undefined });
+});
