@@ -66,10 +66,11 @@ function waitForLivewireAndStart() {
 }
 
 async function startLivewire(assets) {
-    Livewire.hook('request', ({ options }) => {
-        options.headers['X-Wire-Extender'] = '';
-        options.credentials = 'include';
-    })
+    Livewire.interceptRequeset(({ request }) => {
+        request.options.headers['X-Wire-Extender'] = '1';
+        request.options.credentials = 'include';
+    });
+
     await Livewire.triggerAsync('payload.intercept', { assets: componentAssets });
     Livewire.start();
 }
