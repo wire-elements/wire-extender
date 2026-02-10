@@ -12,7 +12,7 @@ class WireExtender
     public static function isEmbeddable($component): bool
     {
         try {
-            $reflectionClass = new ReflectionClass($this->resolveComponentClass($component));
+            $reflectionClass = new ReflectionClass((new self)->resolveComponentClass($component));
             $embedAttribute = $reflectionClass->getAttributes(Embeddable::class)[0] ?? null;
 
             return is_null($embedAttribute) === false;
