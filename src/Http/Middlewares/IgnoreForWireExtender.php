@@ -20,7 +20,7 @@ trait IgnoreForWireExtender
     public function handle($request, Closure $next)
     {
         // Embed route must be skipped, otherwise it will not work with sessions
-        if ($request->getRequestUri() === WireExtender::getEmbedUri()) {
+        if ($request->routeIs('wire-extender.embed')) {
             return $next($request);
         }
 
