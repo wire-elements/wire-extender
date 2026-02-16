@@ -9,7 +9,5 @@
 ## Embed Livewire Components Using Wire Extender
 Wire Extender allows you to embed any Livewire component on any website or even within a static html file.
 
-**Please be aware that Wire Extender is in development**
-
 ## Documentation
 You can find the [full documentation on our site](https://wire-elements.dev/blog/embed-livewire-components-using-wire-extender).

@@ -3,8 +3,7 @@ let componentAssets;
 let currentScript = document.currentScript;
 let livewireStarted = false;
 
-function getUri(append = '')
-{
+function getUri(append = '') {
     let uri = document.querySelector('[data-uri]')?.getAttribute('data-uri');
 
     if (!uri) {
@@ -18,26 +17,14 @@ function getUri(append = '')
     return uri + append;
 }
 
-function getLivewireAssetUri()
-{
-    return document.querySelector('[data-livewire-asset-uri]')?.getAttribute('data-livewire-asset-uri') ?? getUri('livewire/livewire.min.js');
-}
-
-function getLivewireUpdateUri()
-{
-    return document.querySelector('[data-update-uri]')?.getAttribute('data-update-uri') ?? getUri('livewire/update');
-}
-
-function getEmbedUri()
-{
+function getEmbedUri() {
     const base = document.querySelector('[data-embed-uri]')?.getAttribute('data-embed-uri') ?? getUri('livewire/embed');
     const queryString = window.location.search;
 
     return base + queryString;
 }
 
-function injectLivewire()
-{
+function injectLivewire(script) {
     if (window.Livewire || livewireStarted) {
         return;
     }
@@ -46,10 +33,20 @@ function injectLivewire()
     style.innerHTML = '[wire\\:loading][wire\\:loading], [wire\\:loading\\.delay][wire\\:loading\\.delay], [wire\\:loading\\.inline-block][wire\\:loading\\.inline-block], [wire\\:loading\\.inline][wire\\:loading\\.inline], [wire\\:loading\\.block][wire\\:loading\\.block], [wire\\:loading\\.flex][wire\\:loading\\.flex], [wire\\:loading\\.table][wire\\:loading\\.table], [wire\\:loading\\.grid][wire\\:loading\\.grid], [wire\\:loading\\.inline-flex][wire\\:loading\\.inline-flex] {display: none;}[wire\\:loading\\.delay\\.none][wire\\:loading\\.delay\\.none], [wire\\:loading\\.delay\\.shortest][wire\\:loading\\.delay\\.shortest], [wire\\:loading\\.delay\\.shorter][wire\\:loading\\.delay\\.shorter], [wire\\:loading\\.delay\\.short][wire\\:loading\\.delay\\.short], [wire\\:loading\\.delay\\.default][wire\\:loading\\.delay\\.default], [wire\\:loading\\.delay\\.long][wire\\:loading\\.delay\\.long], [wire\\:loading\\.delay\\.longer][wire\\:loading\\.delay\\.longer], [wire\\:loading\\.delay\\.longest][wire\\:loading\\.delay\\.longest] {display: none;}[wire\\:offline][wire\\:offline] {display: none;}[wire\\:dirty]:not(textarea):not(input):not(select) {display: none;}:root {--livewire-progress-bar-color: #2299dd;}[x-cloak] {display: none !important;}';
     document.head.appendChild(style);
 
+    const temp = document.createElement('div');
+    temp.innerHTML = script.trim();
+
+    const scriptEl = temp.querySelector('script');
+
     livewireScript = document.createElement('script');
-    livewireScript.src = getLivewireAssetUri();
-    livewireScript.dataset.csrf = '';
-    livewireScript.dataset.updateUri = getLivewireUpdateUri();
+    livewireScript.src = scriptEl.src;
+
+    for (let attr of scriptEl.attributes) {
+        if (attr.name.startsWith('data-')) {
+            livewireScript.setAttribute(attr.name, attr.value);
+        }
+    }
+
     document.body.appendChild(livewireScript);
 }
 
@@ -58,7 +55,7 @@ function waitForLivewireAndStart() {
         return;
     }
 
-    if(window.Livewire) {
+    if (window.Livewire) {
         startLivewire();
     }
     livewireScript.onload = async function () {
@@ -68,20 +65,17 @@ function waitForLivewireAndStart() {
     livewireStarted = true;
 }
 
-async function startLivewire(assets)
-{
-    Livewire.hook('request', ({ options }) => {
-        options.headers['X-Wire-Extender'] = '';
-        options.credentials = 'include';
-    })
-    await Livewire.triggerAsync('payload.intercept', {assets: componentAssets});
+async function startLivewire(assets) {
+    Livewire.interceptRequest(({ request }) => {
+        request.options.headers['X-Wire-Extender'] = '1';
+        request.options.credentials = 'include';
+    });
+
+    await Livewire.triggerAsync('payload.intercept', { assets: componentAssets });
     Livewire.start();
 }
 
-function renderComponents(components)
-{
-    injectLivewire();
-
+function renderComponents(components) {
     fetch(getEmbedUri(), {
         method: 'POST',
         headers: {
@@ -90,7 +84,7 @@ function renderComponents(components)
         body: JSON.stringify({
             components: components
         }),
-       'credentials': 'include'
+        'credentials': 'include'
     })
         .then(response => response.json())
         .then(data => {
@@ -100,11 +94,13 @@ function renderComponents(components)
             }
 
             componentAssets = data.assets;
+
+            injectLivewire(data.script);
             waitForLivewireAndStart();
         });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     let components = [];
 
     document.querySelectorAll('livewire').forEach((el) => {

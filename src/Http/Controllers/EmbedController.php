@@ -33,6 +33,7 @@ class EmbedController implements HasMiddleware
         return [
             'components' => $components,
             'assets' => SupportScriptsAndAssets::getAssets(),
+            'script' => Blade::render('@livewireScripts'),
         ];
     }
 

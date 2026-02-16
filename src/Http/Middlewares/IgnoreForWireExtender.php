@@ -20,16 +20,18 @@ trait IgnoreForWireExtender
     public function handle($request, Closure $next)
     {
         // We only care about requests from an embedded component
-        if ($this->isLivewireUpdateRequest($request)) {
-            // Loop through all components that are part of the update
-            foreach ($request->json('components', []) as $component) {
-                $snapshot = json_decode($component['snapshot'], true);
-                $component = $snapshot['memo']['name'] ?? false;
+        if (! $this->isLivewireUpdateRequest($request)) {
+            return parent::handle($request, $next);
+        }
 
-                // All components must be embeddable otherwise we will apply the existing middleware
-                if (WireExtender::isEmbeddable($component) === false) {
-                    return parent::handle($request, $next);
-                }
+        // Loop through all components that are part of the update
+        foreach ($request->json('components', []) as $component) {
+            $snapshot = json_decode($component['snapshot'], true);
+            $component = $snapshot['memo']['name'] ?? false;
+
+            // All components must be embeddable otherwise we will apply the existing middleware
+            if (WireExtender::isEmbeddable($component) === false) {
+                return parent::handle($request, $next);
             }
         }
 

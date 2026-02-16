@@ -12,7 +12,7 @@ class WireExtender
     public static function isEmbeddable($component): bool
     {
         try {
-            $reflectionClass = new ReflectionClass(app(ComponentRegistry::class)->new($component));
+            $reflectionClass = new ReflectionClass((new self)->resolveComponentClass($component));
             $embedAttribute = $reflectionClass->getAttributes(Embeddable::class)[0] ?? null;
 
             return is_null($embedAttribute) === false;
@@ -21,5 +21,14 @@ class WireExtender
         }
 
         return true;
+    }
+
+    protected function resolveComponentClass(string $component): string
+    {
+        if (class_exists(ComponentRegistry::class)) {
+            return app(ComponentRegistry::class)->getClass($component);
+        }
+
+        return app('livewire.finder')->resolveClassComponentClassName($component);
     }
 }
