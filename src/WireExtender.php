@@ -9,6 +9,11 @@ use WireElements\WireExtender\Attributes\Embeddable;
 
 class WireExtender
 {
+    public static function getEmbedUri(): string
+    {
+        return route('wire-extender.embed', absolute: false);
+    }
+
     public static function isEmbeddable($component): bool
     {
         try {
