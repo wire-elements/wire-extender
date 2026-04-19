@@ -19,6 +19,11 @@ trait IgnoreForWireExtender
      */
     public function handle($request, Closure $next)
     {
+        // Embed route must be skipped, otherwise it will not work with sessions
+        if ($request->routeIs('wire-extender.embed')) {
+            return $next($request);
+        }
+
         // We only care about requests from an embedded component
         if (! $this->isLivewireUpdateRequest($request)) {
             return parent::handle($request, $next);
@@ -41,7 +46,7 @@ trait IgnoreForWireExtender
     private function isLivewireUpdateRequest($request): bool
     {
         return $request->method() === 'POST' &&
-            app(LivewireManager::class)->getUpdateUri() === $request->getRequestUri() &&
+            $request->getRequestUri() === app(LivewireManager::class)->getUpdateUri() &&
             $request->hasHeader('X-Wire-Extender') &&
             $request->hasHeader('X-Livewire');
     }
